@@ -7,6 +7,14 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 + [jnr-ffi関係記事リンク集](https://qiita.com/Kakky/items/bce3d6c9c47899b000a3)
 
+## 動作環境
+システムのJDK・プロジェクトのJDKともにバージョン13以上?
+
+動作保証のJDKは [Project Panama Early-Access Builds](http://jdk.java.net/panama/)
+だけです。
+
+JDKのバージョンが12以下の場合警告文、jextractがシステムのJDKに存在しない場合にはエラー文を出します。
+
 ## jextract
 
 ### jextractとは？
