@@ -1,9 +1,12 @@
 plugins {
     id 'groovy'
     id 'java'
+    id "com.gradle.plugin-publish" version "0.10.1"
+    id "java-gradle-plugin"
 }
 
-version '1.0-SNAPSHOT'
+version '1.0.5-SNAPSHOT'
+group = 'com.github.javakky'
 
 sourceCompatibility = 13
 compileJava.options.encoding = "UTF-8"
@@ -11,6 +14,7 @@ compileTestJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies{
@@ -19,3 +23,27 @@ dependencies{
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile gradleApi()
 }
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.locale = 'ja_JP'
+    options.memberLevel = JavadocMemberLevel.PRIVATE
+}
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+    website = 'https://github.com/Javakky/jnr'
+    vcsUrl = 'https://github.com/Javakky/jnr'
+    tags = ['jnr']
+    description = 'jnr'
+    plugins {
+        jnrPlugin {
+            id = 'com.github.Javakky.jnr-ffi'
+            // id is captured from java-gradle-plugin configuration
+            displayName = 'Jnr Plugin'
+        }
+    }
+}
+
+
