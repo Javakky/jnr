@@ -7,10 +7,7 @@ import org.gradle.api.Project;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.spi.ToolProvider;
 
 import static java.util.ServiceLoader.*;
@@ -19,19 +16,43 @@ public class JnrPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
 
-        JextractConfigure extension = project.getExtensions()
+        JextractConfigure jextractConfigure = project.getExtensions()
                 .create("jextract", JextractConfigure.class);
-        extension.setSourceRoot(project.getRootDir() + "/" + extension.getSourceRoot());
-        extension.setOutPath(project.getRootDir() + "/" + extension.getOutPath());
+        jextractConfigure.setSourceRoot(project.getRootDir() + "/" + jextractConfigure.getSourceRoot());
+        jextractConfigure.setOutPath(project.getRootDir() + "/" + jextractConfigure.getOutPath());
 
         project.task("jextract")
                 .doLast(task -> {
                     try {
-                        jextract(extension);
+                        jextract(jextractConfigure);
                     } catch (Throwable e) {
                         e.printStackTrace();
+                        throw e;
                     }
                 });
+
+    }
+
+    private static void compileClang() {
+        Runtime runtime = Runtime.getRuntime();
+        Process p = null;
+        try {
+            p = runtime.exec("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Scanner s = new Scanner(p.getInputStream());
+
+        while (s.hasNext()) {
+            System.out.println(s.nextLine());
+        }
+
+        s = new Scanner(p.getErrorStream());
+        while (s.hasNext()) {
+            System.out.println(s.nextLine());
+        }
+
     }
 
     private static void jextract(JextractConfigure conf) {
@@ -44,10 +65,12 @@ public class JnrPlugin implements Plugin<Project> {
             System.out.println(tool.name());
             if (tool.name().equals("jextract")) provider = tool;
         }
-        if (provider == null) System.out.println("エラー: jextractが存在しません。");
+        if (provider == null) {
+            System.out.println("エラー: jextractが存在しません。");
+            throw new RuntimeException();
+        }
         String sourcePath = conf.getSourceRoot();
         runJextract(new File(Objects.requireNonNull(sourcePath)), provider, conf, true);
-
     }
 
 
@@ -72,12 +95,12 @@ public class JnrPlugin implements Plugin<Project> {
                 return;
             }
         }
+        List<String> commandlnArgs = new ArrayList<>();
         StringBuilder packagePath = new StringBuilder();
         packagePath.append(conf.getPackageRoot());
         for (int i = 0; i < route.length; i++) {
             packagePath.append(".").append(route[i]);
         }
-        List<String> commandlnArgs = new ArrayList<>();
         commandlnArgs.add("-o");
         String outPath;
         if (!StringUtils.isEmpty(packagePath.toString())) {
@@ -85,7 +108,12 @@ public class JnrPlugin implements Plugin<Project> {
         } else {
             outPath = new File(headers.get(0)).getName();
         }
-        outPath = conf.getOutPath() + (conf.getOutPath().endsWith("/") ? "" : "/") + outPath + ".jar";
+        if (StringUtils.isEmpty(conf.getOutPath())) {
+            System.out.println("警告: 出力先のディレクトリが設定されていません。");
+            outPath = "./" + outPath + ".jar";
+        } else {
+            outPath = conf.getOutPath() + (conf.getOutPath().endsWith("/") ? "" : "/") + outPath + ".jar";
+        }
         File libDir = new File(conf.getOutPath());
         if (!libDir.exists()) {
             libDir.mkdir();
@@ -99,10 +127,13 @@ public class JnrPlugin implements Plugin<Project> {
             }
         }
         commandlnArgs.add(outPath);
+
         //}
         if (!StringUtils.isEmpty(packagePath.toString())) {
             commandlnArgs.add("-t");
             commandlnArgs.add(packagePath.toString());
+        }else{
+            System.out.println("警告: ルート・パッケージ名が設定されていません。");
         }
         commandlnArgs.addAll(headers);
         provider.run(System.out, System.err, (String[]) commandlnArgs.toArray(new String[commandlnArgs.size()]));
