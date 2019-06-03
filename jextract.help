@@ -1,0 +1,29 @@
+Non-option arguments:
+[String] -- header files
+
+Option                         Description
+------                         -----------
+-?, -h, --help                 print help
+-C <String>                    pass through argument for clang
+-I <String>                    specify include files path
+-L, --library-path <String>    specify library path
+-d <String>                    specify where to place generated class files
+--dry-run                      parse header files but do not generate output jar
+--exclude-symbols <String>     exclude the native symbols matching the given
+                                 pattern
+--include-symbols <String>     include the native symbols matching the given
+                                 pattern. If both --include-symbols and --
+                                 exclude-symbols are specified, --include-
+                                 symbols are considered first.
+-l <String>                    specify a library
+--log <String>                 specify log level in java.util.logging.Level name
+--missing-symbols <String>     action on missing native symbols. --
+                                 missing_symbols=error|exclude|ignore|warn
+--no-locations                 do not generate native location information in
+                                 the .class files
+-o <String>                    specify output jar file or jmod file
+--package-map <String>         specify package mapping as dir=pkg
+--record-library-path          tells whether to record library search path in
+                                 the .class files
+--static-forwarder <Boolean>   generate static forwarder class (default is true)
+-t, --target-package <String>  target package for specified header files
