@@ -7,6 +7,10 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 + [jnr-ffi関係記事リンク集](https://qiita.com/Kakky/items/bce3d6c9c47899b000a3)
 
+紹介記事を書きました。
+
++ [jextractをGradleのタスクで実行するプラグイン作った](https://qiita.com/Kakky/items/56a8f5bb14ae9080fee7)
+
 ## 動作環境
 システムのJDK・プロジェクトのJDKともにバージョン13以上?
 
