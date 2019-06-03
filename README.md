@@ -9,7 +9,7 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 ## jextract
 
-###jextractとは？
+### jextractとは？
 jextractとは、C言語などの.hファイルから対応するJavaのインターフェースを生成するツールです。
 
 [early-access版のJDK](http://jdk.java.net/panama/)に付属しており、[ServiceLoader](https://docs.oracle.com/javase/jp/10/docs/api/java/util/ServiceLoader.html)を利用することでプログラムからも呼び出すことができます。
