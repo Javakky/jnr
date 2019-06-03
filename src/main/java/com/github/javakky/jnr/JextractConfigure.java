@@ -1,10 +1,10 @@
 package com.github.javakky.jnr;
 
 public class JextractConfigure {
-    private String sourceRoot = "src/main/resources/";
-    private String outPath = "libs";
-    private String packageRoot = "";
-    private boolean includeRoot = false;
+    public String sourceRoot = "src/main/resources/";
+    public String outPath = "libs";
+    public String packageRoot = "";
+    public boolean includeRoot = false;
 
     public String getSourceRoot() {
         return sourceRoot;

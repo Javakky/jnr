@@ -62,7 +62,6 @@ public class JnrPlugin implements Plugin<Project> {
         ServiceLoader<ToolProvider> providers = load(ToolProvider.class, ClassLoader.getSystemClassLoader());
         ToolProvider provider = null;
         for (ToolProvider tool : providers) {
-            System.out.println(tool.name());
             if (tool.name().equals("jextract")) provider = tool;
         }
         if (provider == null) {
@@ -97,10 +96,19 @@ public class JnrPlugin implements Plugin<Project> {
         }
         List<String> commandlnArgs = new ArrayList<>();
         StringBuilder packagePath = new StringBuilder();
-        packagePath.append(conf.getPackageRoot());
-        for (int i = 0; i < route.length; i++) {
-            packagePath.append(".").append(route[i]);
+        if(!StringUtils.isEmpty(conf.getPackageRoot())){
+            packagePath.append(conf.getPackageRoot());
+            for (int i = 0; i < route.length; i++) {
+                packagePath.append(".").append(route[i]);
+            }
+        }else{
+            packagePath.append(route[0]);
+            for (int i = 1; i < route.length; i++) {
+                packagePath.append(".").append(route[i]);
+            }
+            System.out.println("警告: ルート・パッケージ名が設定されていません。");
         }
+
         commandlnArgs.add("-o");
         String outPath;
         if (!StringUtils.isEmpty(packagePath.toString())) {
@@ -132,10 +140,9 @@ public class JnrPlugin implements Plugin<Project> {
         if (!StringUtils.isEmpty(packagePath.toString())) {
             commandlnArgs.add("-t");
             commandlnArgs.add(packagePath.toString());
-        }else{
-            System.out.println("警告: ルート・パッケージ名が設定されていません。");
         }
         commandlnArgs.addAll(headers);
+        System.out.println(commandlnArgs.toString());
         provider.run(System.out, System.err, (String[]) commandlnArgs.toArray(new String[commandlnArgs.size()]));
     }
 
