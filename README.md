@@ -23,7 +23,7 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 JDKのバージョンが12以下の場合警告文、jextractがシステムのJDKに存在しない場合にはエラー文を出します。
 
-# 設定
+## 設定
 
 ```groovy:build.gradle
 plugins {
