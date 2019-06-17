@@ -19,6 +19,14 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 JDKのバージョンが12以下の場合警告文、jextractがシステムのJDKに存在しない場合にはエラー文を出します。
 
+# 設定
+
+```groovy:build.gradle
+plugins {
+  id "com.github.Javakky.jnr-ffi" version "1.0.5-SNAPSHOT"
+}
+```
+
 ## jextract
 
 ### jextractとは？
