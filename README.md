@@ -11,6 +11,10 @@ JNR関連記事はこちらのQiitaにまとめたりしているのでよけれ
 
 + [jextractをGradleのタスクで実行するプラグイン作った](https://qiita.com/Kakky/items/56a8f5bb14ae9080fee7)
 
+[Gradle](https://plugins.gradle.org/) に公開しました。
+
++ [com.github.Javakky.jnr-ffi](https://plugins.gradle.org/plugin/com.github.Javakky.jnr-ffi)
+
 ## 動作環境
 システムのJDK・プロジェクトのJDKともにバージョン13以上?
 
